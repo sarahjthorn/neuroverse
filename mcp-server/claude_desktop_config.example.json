@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "ai-brain": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/neuroverse/mcp-server/index.js"
+      ],
+      "env": {
+        "AI_BRAIN_API_URL": "http://localhost:3001/api"
+      }
+    }
+  }
+}

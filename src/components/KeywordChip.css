@@ -1,0 +1,132 @@
+.keyword-chip-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.keyword-chip {
+  padding: 4px 10px;
+  background: var(--overlay-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.keyword-chip:hover {
+  border-color: var(--accent);
+  color: var(--text-normal);
+}
+
+.keyword-popover {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 220px;
+  max-width: calc(100vw - 32px);
+  box-sizing: border-box;
+  padding: 10px;
+  background: var(--bg-secondary, #1c1c1f);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  font-size: 0.78rem;
+}
+
+.keyword-popover-loading {
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.keyword-popover-description {
+  margin: 0 0 8px 0;
+  color: var(--text-normal, #ddd);
+  line-height: 1.4;
+}
+
+.keyword-popover-tag {
+  color: var(--text-faint, #666);
+  font-style: italic;
+}
+
+.keyword-popover-link {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  color: var(--accent);
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 4px 0;
+  margin-bottom: 6px;
+}
+
+.keyword-popover-link:hover {
+  text-decoration: underline;
+}
+
+.keyword-popover-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.keyword-popover-actions button {
+  background: var(--overlay-2);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  padding: 4px 6px;
+  cursor: pointer;
+}
+
+.keyword-popover-actions button:hover:not(:disabled) {
+  color: var(--text-normal);
+  border-color: var(--accent);
+}
+
+.keyword-popover-actions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.keyword-popover-edit textarea {
+  width: 100%;
+  background: var(--overlay-1);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-normal);
+  font-size: 0.75rem;
+  padding: 6px;
+  resize: vertical;
+  margin-bottom: 6px;
+  box-sizing: border-box;
+}
+
+.keyword-popover-kind {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+}
+
+.keyword-popover-kind select {
+  flex: 1;
+  background: var(--overlay-1);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-normal);
+  font-size: 0.75rem;
+  padding: 3px 4px;
+}
+
+.keyword-popover-aliases {
+  margin: 0 0 8px 0;
+  color: var(--text-muted);
+}

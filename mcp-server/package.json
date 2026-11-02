@@ -1,0 +1,17 @@
+{
+  "name": "ai-brain-mcp-server",
+  "version": "1.0.0",
+  "description": "MCP server for AI Brain knowledge graph",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "ai-brain-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "axios": "^1.7.2"
+  }
+}

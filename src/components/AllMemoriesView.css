@@ -1,0 +1,203 @@
+.all-memories {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px clamp(16px, 4vw, 40px) 48px;
+}
+
+.all-memories-inner {
+  max-width: 760px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.all-memories-back {
+  align-self: flex-start;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.all-memories-back:hover {
+  color: var(--accent-hover);
+}
+
+.all-memories-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.all-memories-head h1 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 650;
+  color: var(--text-normal);
+}
+
+.all-memories-count {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.all-memories-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.all-memories-search {
+  flex: 1 1 260px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.6rem 0.85rem;
+  border-radius: 10px;
+  border: 1px solid var(--field-glass-border);
+  background: var(--field-glass-bg);
+  -webkit-backdrop-filter: var(--field-glass-filter);
+  backdrop-filter: var(--field-glass-filter);
+  box-shadow: var(--field-glass-highlight);
+  color: var(--text-muted);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.all-memories-search:focus-within {
+  background: var(--field-glass-focus-bg);
+  border-color: rgba(var(--accent-rgb), 0.7);
+  box-shadow: var(--field-glass-highlight), 0 0 0 3px rgba(var(--accent-rgb), 0.22),
+    0 0 24px rgba(var(--accent-rgb), 0.25);
+}
+
+.all-memories-search input::placeholder {
+  color: var(--text-muted);
+}
+
+.all-memories-search input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-normal);
+  font-size: 0.9rem;
+}
+
+.all-memories-search input:focus {
+  outline: none;
+}
+
+.all-memories-controls select {
+  /* Custom-drawn: the native control rendered inconsistently (mismatched
+     box and arrow, flicker when the theme changed) over the backdrop. */
+  appearance: none;
+  -webkit-appearance: none;
+  color-scheme: light dark;
+  padding: 0.55rem 2rem 0.55rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid var(--field-border);
+  background-color: var(--field-bg);
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%),
+                    linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 15px) 52%, calc(100% - 10px) 52%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  color: var(--text-normal);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.all-memories-controls select:hover {
+  border-color: var(--border-hover);
+}
+
+.all-memories-controls select:focus-visible {
+  outline: 2px solid rgba(var(--accent-rgb), 0.6);
+  outline-offset: 1px;
+}
+
+.all-memories-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.all-memories-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.all-memories-chip:hover {
+  border-color: var(--border-hover);
+  color: var(--text-normal);
+}
+
+.all-memories-chip.is-on {
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--text-normal);
+}
+
+/* Adding this category to the selection would leave no memories. */
+.all-memories-chip.is-empty:not(.is-on) {
+  opacity: 0.45;
+}
+
+.all-memories-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.all-memories-chip-count {
+  color: var(--text-faint);
+  font-size: 0.72rem;
+}
+
+.all-memories-clear {
+  padding: 4px 8px;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.all-memories-empty {
+  color: var(--text-faint);
+  font-size: 0.9rem;
+}
+
+.all-memories-more {
+  align-self: center;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  color: var(--text-normal);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.all-memories-more:hover {
+  border-color: var(--accent);
+}
+
+.all-memories-3d {
+  margin-left: auto;
+  font-size: 0.85rem;
+}

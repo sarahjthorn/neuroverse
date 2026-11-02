@@ -1,0 +1,276 @@
+/* Wishlist decision view: options side by side with pros and cons
+   (WishlistCompare.jsx), plus the "Considering" list on the spotlight card
+   that opens it. Shares wl-primary / wl-text-btn / wl-back from
+   WishlistView.css. */
+
+.wl-options li {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.wl-options li small {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.wl-options li.is-out {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
+
+.wl-compare-btn {
+  margin-top: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--text-normal);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 650;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+
+.wl-compare-btn:hover {
+  background: rgba(var(--accent-rgb), 0.22);
+  transform: translateX(2px);
+}
+
+.wl-stage.is-comparing {
+  align-items: stretch;
+}
+
+.wl-cmp {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 0;
+  padding: 18px;
+  border-radius: 22px;
+  border: 1px solid var(--glass-float-border);
+  background: var(--glass-float-bg);
+  -webkit-backdrop-filter: var(--glass-float-filter);
+  backdrop-filter: var(--glass-float-filter);
+  box-shadow: var(--glass-float-shadow);
+  animation: wl-rise 0.35s var(--ease-out-expo);
+  cursor: auto;
+  user-select: text;
+}
+
+.wl-cmp-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.wl-cmp-head h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-normal);
+}
+
+.wl-cmp-head p {
+  margin: 2px 0 0;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
+.wl-cmp-grid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(230px, 1fr);
+  gap: 12px;
+  overflow: auto;
+  padding-bottom: 4px;
+}
+
+.wl-cmp-col {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  background: var(--overlay-1);
+  overflow-y: auto;
+  transition: opacity 0.25s, border-color 0.25s;
+}
+
+.wl-cmp-col.is-chosen {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 8px 26px rgba(var(--accent-rgb), 0.25);
+}
+
+.wl-cmp-col.is-out {
+  opacity: 0.45;
+}
+
+.wl-cmp-col.is-out h3 {
+  text-decoration: line-through;
+}
+
+.wl-cmp-col.is-add {
+  border-style: dashed;
+  background: none;
+  justify-content: center;
+}
+
+.wl-cmp-col h3 {
+  margin: 0;
+  font-size: 1.02rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-normal);
+}
+
+.wl-cmp-badge {
+  align-self: flex-start;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+
+.wl-cmp-summary {
+  margin: -4px 0 0;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+}
+
+.wl-cmp-price {
+  margin: 0;
+  color: var(--text-normal);
+  font-size: 0.95rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.wl-cmp-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--text-normal);
+}
+
+.wl-cmp-list li {
+  position: relative;
+  padding-left: 22px;
+}
+
+.wl-cmp-list li::before {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 16px;
+  font-weight: 800;
+  text-align: center;
+}
+
+.wl-cmp-list.is-pros li::before { content: '+'; color: #3fbf7f; }
+.wl-cmp-list.is-cons li::before { content: '–'; color: #ff8a80; }
+
+.wl-cmp-list li.is-empty {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.wl-cmp-list li.is-empty::before { content: ''; }
+
+.wl-cmp-actions {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding-top: 6px;
+}
+
+.wl-cmp-actions .wl-primary {
+  padding: 0.5rem 0.9rem;
+  font-size: 0.82rem;
+}
+
+.wl-cmp-col.is-add input,
+.wl-cmp-edit input,
+.wl-cmp-edit textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0.45rem 0.65rem;
+  border-radius: 9px;
+  border: 1px solid var(--field-border);
+  background: var(--field-bg);
+  color: var(--text-normal);
+  font: inherit;
+  font-size: 0.84rem;
+  letter-spacing: normal;
+  text-transform: none;
+  resize: vertical;
+}
+
+.wl-cmp-col.is-add .wl-primary {
+  align-self: flex-start;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+}
+
+.wl-cmp-hint {
+  margin: 0;
+  color: var(--text-faint);
+  font-size: 0.78rem;
+}
+
+.wl-cmp-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wl-cmp-edit label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: var(--text-faint);
+  font-size: 0.7rem;
+  font-weight: 650;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.wl-cmp-edit-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wl-cmp-edit-actions span { flex: 1; }
+
+.wl-cmp-edit-actions .wl-primary {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.82rem;
+}
+
+.wl-text-btn.is-danger { color: #ff8a80; }
+
+.wl-cmp-nolink { align-self: flex-start; }
+
+@media (max-width: 720px) {
+  .wl-cmp { padding: 12px; }
+  .wl-cmp-grid { grid-auto-columns: 82%; scroll-snap-type: x mandatory; }
+  .wl-cmp-col { scroll-snap-align: start; }
+}

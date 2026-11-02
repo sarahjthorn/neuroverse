@@ -1,0 +1,324 @@
+.app {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  background: var(--bg-canvas);
+}
+
+/* First Light: the nav fades away while the intro plays, and back after. */
+.app > .top-nav {
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.app.is-intro > .top-nav {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.app-content {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.graph-container {
+  flex: 1;
+  /* The 3D canvas has a fixed pixel width - without this the flex item
+     can't shrink below it, so opening NodeDetailsPanel pushed the panel
+     off-screen instead of narrowing the graph. */
+  min-width: 0;
+  overflow: hidden;
+  position: relative;
+  background: var(--bg-canvas);
+}
+
+.app-content {
+  position: relative;
+  /* The top bar overlays this (see TopNav.css): the brain stage runs up
+     under it, and the pages start below it. */
+  padding-top: var(--nav-h);
+}
+
+/* The persistent 3D brain (see App.jsx). */
+.brain-stage {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000005;
+}
+
+[data-theme="light"] .brain-stage {
+  background: #eceef8;
+}
+
+.brain-stage.is-backdrop {
+  pointer-events: none;
+}
+
+/* Star name tags are for Explore - behind a page they float over the
+   cards (the selected star's tag landed on Home's headers). */
+.brain-stage.is-backdrop .brain-labels {
+  display: none;
+}
+
+.brain-stage-dim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: var(--bg-canvas);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.brain-stage.is-backdrop .brain-stage-dim {
+  opacity: 0.5;
+}
+
+[data-theme="light"] .brain-stage.is-backdrop .brain-stage-dim {
+  opacity: 0.45;
+}
+
+.home-layer {
+  position: absolute;
+  inset: var(--nav-h) 0 0 0;
+  z-index: 2;
+  display: flex;
+}
+
+/* Home fades in piece by piece rather than as one layer, so the Ask bar can
+   stay fully opaque while it flies down out of the nav (HomeView). */
+.home-view > :not(.home-frame),
+.home-frame > :not(.home-hero),
+.home-hero > :not(.home-search-row) {
+  animation: layer-fade-in 0.35s ease-out;
+}
+
+.home-layer.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+/* The Ask bar doesn't fade with the rest of Home - the nav search flies up
+   out of its spot instead (GlobalSearch), so it's gone the instant you leave. */
+@media (prefers-reduced-motion: no-preference) {
+  .home-layer.is-leaving .home-search-row {
+    visibility: hidden;
+  }
+}
+
+.explore-layer {
+  position: absolute;
+  inset: var(--nav-h) 0 0 0;
+  z-index: 1;
+  background: transparent;
+  pointer-events: none;
+  animation: layer-fade-in 0.45s ease-out;
+}
+
+.explore-layer > * {
+  pointer-events: auto;
+}
+
+/* Memories, Reflect, Wishlist and Axon float over the dimmed brain like
+   Home (their cards are opaque). */
+.all-memories,
+.stats-view,
+.reflect-view,
+.wishlist-view,
+.axon-view {
+  position: relative;
+  z-index: 1;
+  animation: layer-fade-in 0.35s ease-out;
+}
+
+/* Frosted cards on the pages that float over the brain. Search bars use
+   their own --field-glass-* surface (lit edge, accent glow on focus); Explore's memory card and details panel use the denser
+   --glass-float-* tokens (NodeCard3D.css / NodeDetailsPanel.css). */
+.home-card,
+.axon-page,
+.home-see-all,
+.home-search-body,
+.home-add-panel,
+.memory-card,
+.wishlist-card,
+.all-memories-more,
+.stats-card,
+.stats-tile {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-filter);
+  backdrop-filter: var(--glass-filter);
+}
+
+/* A band of light sweeps across a search bar while it's searching by
+   meaning or Claude is writing an answer. */
+.home-search-row.is-searching::after,
+.global-search-box.is-searching::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 32%,
+    rgba(var(--accent-rgb), 0.32) 44%,
+    rgba(255, 255, 255, 0.42) 50%,
+    rgba(var(--accent-rgb), 0.32) 56%,
+    transparent 68%
+  );
+  background-size: 250% 100%;
+  animation: search-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes search-shimmer {
+  from { background-position: 110% 0; }
+  to { background-position: -10% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-search-row.is-searching::after,
+  .global-search-box.is-searching::after {
+    animation: none;
+    background: rgba(var(--accent-rgb), 0.08);
+  }
+}
+
+.memory-card:hover {
+  background: var(--glass-hover-bg);
+}
+
+/* A page kept mounted (filters, scroll) while you're off in Explore after
+   jumping to one of its memories - see returnView in App.jsx. */
+.all-memories.is-parked,
+.stats-view.is-parked,
+.reflect-view.is-parked {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  pointer-events: none;
+  animation: none;
+}
+
+/* The full details panel floats on the right (NodeDetailsPanel.css) - the
+   pages under it make room rather than being covered. Explore doesn't: the
+   panel sits over the starfield there. */
+/* Each page drops its own right padding beside the panel, so the gap
+   between the two is exactly --page-gap (the panel floats --page-gap from
+   the window edge, plus --page-gap between). */
+/* The make-room happens in one step (gliding the width would cross Home's,
+   Stats' and Reflect's container-query breakpoints mid-animation, so columns
+   snapped partway through); App then nudges the page with a short transform
+   settle in the panel's direction - see the detailsOpen effect. */
+.has-details .home-layer {
+  right: calc(var(--details-w) + 2 * var(--page-gap));
+}
+
+.has-details .home-view,
+.has-details > .stats-view,
+.has-details > .reflect-view {
+  padding-right: 0;
+}
+
+.has-details > .all-memories,
+.has-details > .stats-view,
+.has-details > .reflect-view,
+.has-details > .wishlist-view {
+  margin-right: calc(var(--details-w) + 2 * var(--page-gap));
+}
+
+/* "Back to Stats" etc. after jumping to a memory from another page - top
+   left, where the digest card moves down to make room for it. */
+.explore-return {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 710;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--glass-float-border);
+  background: var(--glass-float-bg);
+  -webkit-backdrop-filter: var(--glass-float-filter);
+  backdrop-filter: var(--glass-float-filter);
+  box-shadow: var(--glass-float-shadow);
+  color: var(--text-normal);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.explore-return:hover {
+  border-color: var(--accent);
+}
+
+@keyframes layer-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-view > :not(.home-frame),
+  .home-frame > :not(.home-hero),
+  .home-hero > :not(.home-search-row),
+  .explore-layer {
+    animation: none;
+  }
+}
+
+/* Cards arrive one after another rather than all at once: the memory feed
+   (Home and Memories), Home's right rail, and the Stats / Reflect cards.
+   `backwards` fill only - after the rise, hover/press styles are untouched. */
+.memory-feed > *,
+.home-rail > *,
+.stats-view > *,
+.reflect-grid > * {
+  animation: card-rise 0.36s var(--ease-out-expo) backwards;
+}
+
+.memory-feed > :nth-child(2), .home-rail > :nth-child(2), .stats-view > :nth-child(2), .reflect-grid > :nth-child(2) { animation-delay: 30ms; }
+.memory-feed > :nth-child(3), .home-rail > :nth-child(3), .stats-view > :nth-child(3), .reflect-grid > :nth-child(3) { animation-delay: 60ms; }
+.memory-feed > :nth-child(4), .home-rail > :nth-child(4), .stats-view > :nth-child(4), .reflect-grid > :nth-child(4) { animation-delay: 90ms; }
+.memory-feed > :nth-child(5), .home-rail > :nth-child(5), .stats-view > :nth-child(5), .reflect-grid > :nth-child(5) { animation-delay: 120ms; }
+.memory-feed > :nth-child(6), .home-rail > :nth-child(6), .stats-view > :nth-child(6), .reflect-grid > :nth-child(6) { animation-delay: 150ms; }
+.memory-feed > :nth-child(7), .home-rail > :nth-child(7), .stats-view > :nth-child(7), .reflect-grid > :nth-child(7) { animation-delay: 180ms; }
+.memory-feed > :nth-child(n+8), .home-rail > :nth-child(n+8), .stats-view > :nth-child(n+8), .reflect-grid > :nth-child(n+8) { animation-delay: 210ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .memory-feed > *,
+  .home-rail > *,
+  .stats-view > *,
+  .reflect-grid > * {
+    animation: none;
+  }
+}
+
+/* A count or label that jumps to those memories in Explore (onViewInBrain).
+   Always link-coloured so it's obviously clickable. The resets have zero
+   specificity so a page's own sizing and alignment still apply. */
+:where(.explore-link) {
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.explore-link {
+  color: var(--accent);
+}
+
+.explore-link:hover {
+  color: var(--accent-hover);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.explore-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 3px;
+}

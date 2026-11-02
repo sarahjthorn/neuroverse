@@ -1,0 +1,93 @@
+.time-scrubber {
+  position: absolute;
+  /* Anchored by its left edge so the play button never moves: the rest of
+     the bar grows out to the right of it, and the pointer stays on ▶. */
+  bottom: 16px;
+  left: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  /* collapsed: just the round play button */
+  width: 40px;
+  overflow: hidden;
+  transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1) 0.25s,
+              padding 0.28s cubic-bezier(0.16, 1, 0.3, 1) 0.25s;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  z-index: 900;
+}
+
+.time-scrubber-play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  min-width: 22px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb), 0.18);
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.time-scrubber-play:hover {
+  background: rgba(var(--accent-rgb), 0.3);
+}
+
+.time-scrubber-label {
+  color: var(--text-faint);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.time-scrubber-range {
+  flex: 1;
+  min-width: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.time-scrubber-status {
+  min-width: 92px;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.time-scrubber:hover,
+.time-scrubber:focus-within,
+.time-scrubber.is-open {
+  width: min(560px, calc(100% - 32px));
+  padding: 8px 16px 8px 8px;
+  transition-delay: 0s;
+}
+
+.time-scrubber-rest {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  opacity: 0;
+  transition: opacity 0.15s ease 0.1s;
+}
+
+.time-scrubber:hover .time-scrubber-rest,
+.time-scrubber:focus-within .time-scrubber-rest,
+.time-scrubber.is-open .time-scrubber-rest {
+  opacity: 1;
+  transition-delay: 0.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .time-scrubber,
+  .time-scrubber-rest {
+    transition-duration: 0.01s;
+  }
+}

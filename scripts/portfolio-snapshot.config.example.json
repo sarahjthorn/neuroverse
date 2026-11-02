@@ -1,0 +1,28 @@
+{
+  "outputDir": "../portfolio/brain",
+  "publicCategories": ["Project", "Interests", "Technical", "Research"],
+  "conditionalCategories": {
+    "Preferences": { "with": ["Research", "Interests"] },
+    "Career": { "timeline": true }
+  },
+  "maskOnPrivate": ["Health", "Mind"],
+  "includeContent": false,
+  "reviewedThrough": "2026-01-01",
+  "maxLinksPerNode": 8,
+  "hidePatterns": ["salary", "/pay ?rise/", "interview", "recruiter", "/apply(ing)? (to|for)/", "password"],
+  "hideIds": [
+    { "id": "node_0000000000000_example", "why": "Copy a realId from the review file to make that memory private" }
+  ],
+  "tags": {
+    "projects": {
+      "my-project": ["my project", "/another (name|alias)/"]
+    },
+    "timeline": [
+      ["university", "degree"],
+      ["first job", "company name"]
+    ],
+    "topics": {
+      "reading": { "label": "what I'm reading", "match": ["reading", "book"] }
+    }
+  }
+}

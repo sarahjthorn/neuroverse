@@ -1,0 +1,180 @@
+/* First Light - the intro. Sits over the 3D brain (which stays visible and,
+   from the orbit beat on, interactive), so the overlay itself never takes
+   clicks except on the text, input and skip button. Light text on both
+   themes: the canvas is a dark starfield or a mid-toned sky either way. */
+
+.first-light {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  color: #f4f1ff;
+  --fl-fade: 1200ms;
+}
+
+/* The light theme's sky is bright pink/peach, which swallows light text -
+   dim it to dusk while the intro plays. */
+[data-theme="light"] .first-light::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 90% 80% at 50% 60%, rgba(28, 14, 66, 0.62), rgba(28, 14, 66, 0.38));
+  animation: first-light-veil var(--fl-fade) ease both;
+}
+
+@keyframes first-light-veil {
+  from { opacity: 0; }
+}
+
+.first-light-stage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 0 24px;
+}
+
+/* Sits a little below centre so a freshly lit star at the centre of the
+   screen is never hidden behind the words. */
+.first-light-line {
+  transform: translateY(22vh);
+  text-align: center;
+  max-width: 34rem;
+  opacity: 0;
+  filter: blur(10px);
+  transition:
+    opacity var(--fl-fade) ease,
+    filter var(--fl-fade) ease;
+}
+
+.first-light-line.is-shown {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.first-light-text {
+  margin: 0;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+  font-weight: 200;
+  letter-spacing: 0.14em;
+  line-height: 1.6;
+  text-shadow: 0 0 18px rgba(10, 6, 30, 0.7), 0 0 2px rgba(10, 6, 30, 0.5);
+}
+
+.first-light-form {
+  margin-top: 28px;
+  pointer-events: auto;
+}
+
+/* A single underline, no box. */
+.first-light-input {
+  width: min(22rem, 80vw);
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(244, 241, 255, 0.45);
+  border-radius: 0;
+  padding: 6px 2px 8px;
+  color: inherit;
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  text-align: center;
+  outline: none;
+  caret-color: #fff;
+  transition: border-color 300ms ease;
+}
+
+.first-light-input:focus {
+  border-bottom-color: rgba(255, 255, 255, 0.9);
+}
+
+.first-light-input:disabled {
+  opacity: 0.6;
+}
+
+.first-light-note {
+  margin: 12px 0 0;
+  min-height: 1.2em;
+  font-size: 0.72rem;
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: rgba(244, 241, 255, 0.62);
+  text-shadow: 0 0 10px rgba(10, 6, 30, 0.8);
+}
+
+.first-light-thinking::after {
+  content: '';
+  animation: first-light-dots 1.4s steps(4, end) infinite;
+}
+
+@keyframes first-light-dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
+.first-light-skip {
+  position: absolute;
+  right: 20px;
+  bottom: 18px;
+  pointer-events: auto;
+  background: none;
+  border: none;
+  padding: 8px 10px;
+  color: rgba(244, 241, 255, 0.5);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 300;
+  letter-spacing: 0.24em;
+  cursor: pointer;
+  transition: color 200ms ease;
+}
+
+.first-light-skip:hover,
+.first-light-skip:focus-visible {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Ghost stars (beat 4): drift in from the edge, flicker, fade. */
+.first-light-ghosts {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.first-light-ghost {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 10px 3px rgba(190, 170, 255, 0.55);
+  opacity: 0;
+  animation-name: first-light-ghost;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+}
+
+@keyframes first-light-ghost {
+  0% { transform: translate(var(--x0), var(--y0)); opacity: 0; }
+  15% { opacity: 0.8; }
+  22% { opacity: 0.3; }
+  28% { opacity: 0.9; }
+  70% { opacity: 0.5; }
+  100% { transform: translate(var(--x1), var(--y1)); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .first-light-line { filter: none; }
+  .first-light-ghost { animation: none; opacity: 0; }
+}
+
+@media (max-width: 600px) {
+  .first-light-line { transform: translateY(18vh); }
+}

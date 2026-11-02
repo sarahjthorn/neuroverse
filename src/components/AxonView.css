@@ -1,0 +1,290 @@
+/* The Axon page (AxonView.jsx), an optional tab. Scrolls inside
+   itself like the Wishlist page; one centred column on a frosted panel. */
+.axon-view {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.axon-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px clamp(16px, 4vw, 40px) 48px;
+}
+
+.axon-page {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 1.2rem 1.3rem;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+}
+
+.axon-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.axon-head h1 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.axon-head p,
+.axon-empty {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.axon-cats {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+}
+
+.axon-cat {
+  display: grid;
+  grid-template-columns: 90px 1fr 60px;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.axon-cat-bar {
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-color);
+  overflow: hidden;
+}
+
+.axon-cat-bar > span {
+  display: block;
+  height: 100%;
+}
+
+.today-stats {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.today-level-bar {
+  width: 56px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-color);
+  overflow: hidden;
+}
+
+.today-level-bar > span {
+  display: block;
+  height: 100%;
+  background: var(--accent);
+}
+
+/* Last 14 days: a filled tick for each day with something done. */
+.today-discipline {
+  display: flex;
+  gap: 2px;
+}
+
+.today-discipline > span {
+  width: 5px;
+  height: 8px;
+  border-radius: 1px;
+  background: var(--border-color);
+}
+
+.today-discipline > span.is-done {
+  background: var(--accent);
+}
+
+.axon-strip {
+  display: block;
+  width: 100%;
+}
+
+/* Axon is drawn over the whole window so it can leave its strip and curl
+   round the active nav tab or what you select (Axon.jsx). Above the
+   nav (1000), below the search results (1200); clicks go straight through. */
+.axon-crawler {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 1100;
+}
+
+.today-sort {
+  display: flex;
+  gap: 6px;
+}
+
+.today-sort button,
+.today-actions button {
+  padding: 3px 10px;
+  border: 1px solid var(--border-hover);
+  border-radius: 8px;
+  background: var(--overlay-1);
+  font: inherit;
+  font-size: 0.72rem;
+  color: var(--text-normal);
+  cursor: pointer;
+}
+
+.today-sort button.is-active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.today-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.today-item {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background: var(--overlay-1);
+}
+
+.today-item.is-later {
+  opacity: 0.6;
+}
+
+.today-item-main {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 8px 10px;
+  background: transparent;
+  border: none;
+  font: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.today-item-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  margin-top: 5px;
+  border-radius: 50%;
+}
+
+.today-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.today-item-title {
+  font-size: 0.85rem;
+  color: var(--text-normal);
+}
+
+.today-item-why {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.today-item-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 0.72rem;
+  color: var(--text-faint, var(--text-muted));
+}
+
+.today-dots {
+  display: inline-flex;
+  gap: 2px;
+  margin-right: 4px;
+}
+
+.today-dots > span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--border-hover);
+}
+
+.today-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 10px 9px 29px;
+}
+
+.today-note {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 10px 0 29px;
+}
+
+.today-note label {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.today-note .today-actions {
+  padding-left: 0;
+}
+
+.today-error {
+  margin: 0;
+  padding: 0 10px 8px 29px;
+  font-size: 0.75rem;
+  color: var(--danger, #e64249);
+}
+
+.today-done-line {
+  margin: 0;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.axon-ideas h2 {
+  margin: 4px 0 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.axon-ideas .today-item-main {
+  cursor: default;
+}
+
+.axon-past summary {
+  margin: 4px 0 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+}

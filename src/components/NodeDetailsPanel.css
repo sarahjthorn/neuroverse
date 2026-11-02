@@ -1,0 +1,615 @@
+.node-details-panel {
+  /* Floats on the right of the page in frosted glass; pages make room via
+     .has-details in App.css. */
+  position: absolute;
+  top: calc(var(--nav-h) + var(--page-gap));
+  right: var(--page-gap);
+  bottom: var(--page-gap);
+  z-index: 720;
+  width: var(--details-w);
+  max-width: calc(100% - 32px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid var(--glass-float-border);
+  background: var(--glass-float-bg);
+  -webkit-backdrop-filter: var(--glass-float-filter);
+  backdrop-filter: var(--glass-float-filter);
+  box-shadow: var(--glass-float-shadow);
+  color: var(--text-normal);
+  animation: details-panel-in var(--panel-in-ms) var(--ease-out-expo) both;
+}
+
+/* Slides in from off the right edge, and back out the same way on close
+   (App keeps it mounted for --panel-out-ms via usePresence). */
+@keyframes details-panel-in {
+  from { opacity: 0.4; transform: translateX(calc(100% + 24px)); }
+  to { opacity: 1; transform: none; }
+}
+
+.node-details-panel.is-leaving {
+  pointer-events: none;
+  animation: details-panel-out var(--panel-out-ms) var(--ease-in-quad) both;
+}
+
+@keyframes details-panel-out {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0.4; transform: translateX(calc(100% + 24px)); }
+}
+
+/* Compact (Explore): same panel, sized to its contents instead of the full
+   height - scrolls inside if a long memory needs more room. */
+.node-details-panel.is-compact {
+  bottom: auto;
+  max-height: calc(100% - var(--nav-h) - 2 * var(--page-gap));
+}
+
+/* Expanding: while NodeDetailsPanel glides the height (WAAPI), the sections
+   that just appeared fade up one after another, in reading order
+   (--reveal-i). */
+.node-details-panel.is-expanding .details-reveal {
+  animation: details-reveal 0.42s var(--ease-out-expo) both;
+  animation-delay: calc(110ms + var(--reveal-i, 0) * 55ms);
+}
+
+/* Collapsing: the compact footer settles in as the frame shrinks to it. */
+.node-details-panel.is-collapsing .details-footer-compact {
+  animation: details-content-in 0.3s var(--ease-out-expo) 0.12s both;
+}
+
+@keyframes details-reveal {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Switching to another memory while open: the frame stays put, only the
+   contents fade up. */
+.node-details-panel.is-swapping-in:not(.is-leaving) {
+  animation: none;
+}
+
+.node-details-panel.is-swapping-in > * {
+  animation: details-content-in 0.18s ease-out both;
+}
+
+@keyframes details-content-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .node-details-panel,
+  .node-details-panel.is-leaving,
+  .node-details-panel.is-swapping-in > *,
+  .node-details-panel.is-expanding .details-reveal,
+  .node-details-panel.is-collapsing .details-footer-compact { animation: none; }
+  .node-details-panel.is-leaving { opacity: 0; }
+}
+
+.details-header {
+  padding: 12px 12px 0 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.details-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.details-explore {
+  padding: 4px 8px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--accent);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.details-explore:hover {
+  background: rgba(var(--accent-rgb), 0.12);
+}
+
+.details-collapse {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-faint);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.details-collapse:hover {
+  background: var(--overlay-2);
+  color: var(--text-normal);
+}
+
+.details-collapse svg {
+  transition: transform 0.35s var(--ease-out-expo);
+}
+
+.details-collapse.is-flipped svg {
+  transform: rotate(180deg);
+}
+
+.details-collapse svg,
+.details-expand svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Compact's one action: grow into the full panel. */
+.details-footer.details-footer-compact {
+  padding-top: 0;
+  border-top: none;
+}
+
+.details-expand {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border-radius: 9px;
+  background: rgba(var(--accent-rgb), 0.1);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.details-expand:hover {
+  background: rgba(var(--accent-rgb), 0.18);
+  border-color: var(--accent);
+}
+
+.details-expand svg {
+  transition: transform 0.2s var(--ease-out-expo);
+}
+
+.details-expand:hover svg {
+  transform: translateY(1px);
+}
+
+.details-kicker {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.close-button {
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+}
+
+.close-button:hover {
+  background: var(--overlay-2);
+  color: var(--text-normal);
+}
+
+.details-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 18px 18px;
+}
+
+.details-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+
+.details-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.details-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.details-date {
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+.detail-section {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--overlay-3);
+}
+
+.detail-section label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+/* Edit mode keeps its fields in plain stacked sections. */
+.is-editing .detail-section:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+.categories-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.category-toggle {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid var(--border-color);
+  background: var(--overlay-1);
+  color: var(--text-faint);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.category-toggle:hover {
+  border-color: var(--text-muted);
+  color: var(--text-muted);
+}
+
+.category-toggle.active {
+  font-weight: 600;
+}
+
+.categories-loading {
+  margin: 4px 0 0 0;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.node-detail-title {
+  margin: 10px 0 4px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-normal);
+  line-height: 1.3;
+}
+
+.node-detail-content {
+  margin: 12px 0 0;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.keywords-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.editable-keyword-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: default;
+}
+
+.remove-keyword-button {
+  background: transparent;
+  border: none;
+  color: var(--text-faint);
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.remove-keyword-button:hover {
+  color: #e06c75;
+}
+
+.add-keyword-row {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.add-keyword-row .edit-input {
+  flex: 1;
+}
+
+.add-keyword-button {
+  padding: 0 12px;
+  background: var(--overlay-2);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.add-keyword-button:hover {
+  color: var(--text-normal);
+  border-color: var(--accent);
+}
+
+/* Linked-memory rows: dot, title, strength badge. */
+.details-links {
+  list-style: none;
+  margin: 0 -8px;
+  padding: 0;
+}
+
+.details-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-radius: 7px;
+  background: none;
+  color: var(--text-normal);
+  font-size: 0.85rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.details-link:hover {
+  background: var(--overlay-2);
+}
+
+.details-link-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.details-link-strength {
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text-faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.details-footer {
+  display: flex;
+  gap: 8px;
+  padding: 12px 18px 14px;
+  border-top: 1px solid var(--overlay-3);
+}
+
+.detail-section.duplicate-suggestion {
+  padding: 0.75rem;
+  background: rgba(var(--accent-rgb), 0.08);
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
+  border-radius: 8px;
+}
+
+.duplicate-suggestion p {
+  margin: 0 0 0.6rem 0;
+  font-size: 0.85rem;
+  color: var(--text-normal);
+  line-height: 1.4;
+}
+
+.duplicate-suggestion-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.duplicate-suggestion-actions button {
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  flex: none;
+}
+
+.edit-button,
+.delete-button,
+.save-button,
+.cancel-button {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0.55rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+}
+
+.edit-button {
+  color: var(--accent);
+  border-color: rgba(var(--accent-rgb), 0.5);
+}
+
+.edit-button:hover {
+  background: rgba(var(--accent-rgb), 0.12);
+}
+
+.delete-button {
+  color: #e06c75;
+  border-color: rgba(224, 108, 117, 0.5);
+}
+
+.delete-button:hover {
+  background: rgba(224, 108, 117, 0.1);
+}
+
+.save-button {
+  background: #98c379;
+  color: white;
+  border-color: #98c379;
+}
+
+.save-button:hover {
+  background: #a8d389;
+}
+
+.cancel-button {
+  color: var(--text-muted);
+}
+
+.cancel-button:hover {
+  background: var(--overlay-2);
+  color: var(--text-normal);
+}
+
+.edit-input,
+.edit-textarea {
+  width: 100%;
+  padding: 0.65rem;
+  background: var(--field-bg, var(--overlay-1));
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  color: var(--text-normal);
+  font-size: 0.9rem;
+  font-family: inherit;
+  transition: all 0.2s;
+}
+
+.edit-input:focus,
+.edit-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: var(--overlay-2);
+}
+
+.edit-textarea {
+  resize: vertical;
+  line-height: 1.5;
+}
+
+/* Scrollbar styling */
+.details-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.details-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.details-content::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.details-content::-webkit-scrollbar-thumb:hover {
+  background: var(--border-hover);
+}
+
+.duplicate-suggestion-link {
+  display: inline;
+  padding: 0;
+  border: none;
+  background: none;
+  font: inherit;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+
+.duplicate-suggestion .duplicate-suggestion-reason {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.show-more-button {
+  margin-top: 8px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.show-more-button:hover {
+  text-decoration: underline;
+}
+
+.details-links-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.details-links-head label {
+  margin-bottom: 0;
+}
+
+.details-links-3d {
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}

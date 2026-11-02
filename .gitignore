@@ -1,0 +1,12 @@
+node_modules
+dist
+.env
+*.log
+.DS_Store
+data/*
+!data/.gitkeep
+scripts/portfolio-snapshot.review.txt
+# Your own export settings name real memories; start from the .example file
+scripts/portfolio-snapshot.config.json
+# Axon's explore run logs quote private memories
+axon/runs/

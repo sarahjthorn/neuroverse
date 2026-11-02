@@ -1,0 +1,256 @@
+/* Reflect-only pieces on top of the shared stats-* layout (StatsView.css):
+   the wondering card, Your mix's Ask buttons and "What you've told it". */
+
+.reflect-hero-sub {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+.reflect-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+/* --- It's wondering ------------------------------------------------------ */
+.reflect-wondering {
+  display: flex;
+  flex-direction: column;
+}
+
+.reflect-pager {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.reflect-pager button {
+  background: transparent;
+  border: none;
+  padding: 0 6px;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.reflect-pager button:hover {
+  color: var(--accent);
+}
+
+/* The question gets room to breathe - this is the card's main event. */
+.reflect-question .question-text {
+  font-size: 1.25rem;
+  line-height: 1.35;
+}
+
+.reflect-question .question-why {
+  font-size: 0.85rem;
+}
+
+.reflect-question .question-input {
+  min-height: 96px;
+  font-size: 0.92rem;
+}
+
+/* No open questions: the message and the picker sit together in the
+   middle of the card rather than at its top and bottom. */
+.reflect-wondering.is-caught-up .reflect-card-head {
+  margin-bottom: 0;
+}
+
+.reflect-wondering.is-caught-up .reflect-caught-up {
+  margin-top: auto;
+}
+
+.reflect-wondering.is-caught-up .reflect-picker {
+  margin-top: 0;
+  margin-bottom: auto;
+}
+
+.reflect-caught-up {
+  margin: 0;
+  font-size: 1.05rem;
+  color: var(--text-muted);
+}
+
+.reflect-picker {
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.reflect-question + .reflect-picker {
+  margin-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.reflect-picker .ask-picker-title {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+/* --- Your mix ----------------------------------------------------------- */
+.stats-bars.reflect-mix li {
+  grid-template-columns: 120px 1fr 32px 38px;
+}
+
+.reflect-thin-mark {
+  font-size: 0.7rem;
+  color: var(--accent);
+}
+
+/* "Ask" sits on every row but only shows on hover/focus, so the bars stay
+   clean; touch screens (no hover) always show it. */
+.reflect-mix-ask {
+  padding: 2px 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 0.75rem;
+  color: var(--accent);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.reflect-mix li:hover .reflect-mix-ask,
+.reflect-mix-ask:focus-visible,
+.reflect-mix-ask:disabled {
+  opacity: 1;
+}
+
+.reflect-mix-ask:disabled {
+  color: var(--text-faint);
+  cursor: default;
+}
+
+.reflect-mix li:not(:hover) .reflect-mix-ask:disabled {
+  opacity: 0;
+}
+
+@media (hover: none) {
+  .reflect-mix-ask { opacity: 1; }
+}
+
+/* --- Your brain's shape (radar) ----------------------------------------- */
+.reflect-shape-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.reflect-shape {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: auto;
+  overflow: visible;
+}
+
+.reflect-shape-ring {
+  fill: none;
+  stroke: var(--border-color);
+}
+
+.reflect-shape-spoke {
+  stroke: var(--border-color);
+}
+
+.reflect-shape-all {
+  fill: rgba(var(--accent-rgb), 0.28);
+  stroke: rgba(var(--accent-rgb), 0.7);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+
+.reflect-shape-recent {
+  fill: none;
+  stroke: var(--text-normal);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  stroke-linejoin: round;
+}
+
+.reflect-shape-label {
+  font-size: 8.5px;
+  fill: var(--text-muted);
+}
+
+.reflect-shape-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
+  white-space: nowrap;
+}
+
+.reflect-shape-key::before {
+  content: '';
+  width: 14px;
+  height: 0;
+  border-top: 2px solid rgba(var(--accent-rgb), 0.8);
+}
+
+.reflect-shape-key-recent::before {
+  border-top: 2px dashed var(--text-normal);
+}
+
+/* --- What you've told it ------------------------------------------------ */
+/* Answers side by side, newest first, so the card stays short. */
+.reflect-answer-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 22px;
+}
+
+.reflect-answer-list li {
+  min-width: 0;
+}
+
+@container stats (max-width: 900px) {
+  .reflect-answer-list { grid-template-columns: minmax(0, 1fr); }
+}
+
+.reflect-answer-meta {
+  font-size: 0.72rem;
+  color: var(--text-faint);
+}
+
+.reflect-answer-question {
+  margin: 2px 0 4px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.reflect-answer-text {
+  margin: 0;
+  padding-left: 10px;
+  border-left: 2px solid var(--accent);
+  font-size: 0.83rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.reflect-answer-nodes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.reflect-more {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-color);
+}

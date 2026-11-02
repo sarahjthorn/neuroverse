@@ -1,0 +1,259 @@
+/* Dark glass regardless of theme - these float over the black starfield. */
+/* Dark glass for the popover-ish bits (they float over the starfield). */
+.explore-key,
+.explore-hint {
+  background: rgba(10, 10, 22, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #e8e8f0;
+}
+
+/* Stacked directly above the timeline's play button, in the same round,
+   purple-on-panel style so the three read as one control column. */
+.explore-tools {
+  position: absolute;
+  left: 16px;
+  bottom: 64px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.explore-tool {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--accent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.explore-tool:hover,
+.explore-tool.is-open {
+  background: rgba(var(--accent-rgb), 0.18);
+  border-color: rgba(var(--accent-rgb), 0.55);
+}
+
+.explore-key {
+  position: absolute;
+  left: 52px;
+  bottom: 0;
+  width: 230px;
+  padding: 12px 12px 10px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+  animation: explore-pop 0.15s ease-out;
+}
+
+.explore-key.is-leaving {
+  pointer-events: none;
+  animation: pop-out 0.12s var(--ease-in-quad) both;
+}
+
+@keyframes explore-pop {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+.explore-key-title {
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: rgba(232, 232, 240, 0.55);
+}
+
+.explore-key-note {
+  margin: 4px 0 8px;
+  font-size: 0.72rem;
+  color: rgba(232, 232, 240, 0.5);
+}
+
+.explore-key ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.explore-key li button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 6px;
+  margin: 0 -6px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: #e8e8f0;
+  font-size: 0.82rem;
+  cursor: pointer;
+}
+
+.explore-key li button:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.explore-key li button.is-hidden {
+  opacity: 0.35;
+}
+
+.explore-key-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.explore-key-name {
+  flex: 1;
+  text-align: left;
+}
+
+.explore-key-count {
+  font-size: 0.72rem;
+  color: rgba(232, 232, 240, 0.45);
+}
+
+.explore-key-foot {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.7rem;
+  color: rgba(232, 232, 240, 0.45);
+}
+
+.explore-hint {
+  position: absolute;
+  bottom: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 650;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: calc(100% - 32px);
+  padding: 7px 8px 7px 14px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  animation: explore-pop 0.3s ease-out;
+}
+
+.explore-hint button {
+  padding: 3px 10px;
+  border: none;
+  border-radius: 999px;
+  background: #8875ff;
+  color: #fff;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .explore-hint {
+    white-space: normal;
+  }
+}
+
+.explore-tool-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: #fff;
+  font: 700 0.62rem/16px system-ui, sans-serif;
+}
+
+.explore-key-section {
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.explore-key-comet {
+  background: #fff;
+  box-shadow: -6px 0 6px -2px rgba(255, 255, 255, 0.6);
+}
+
+.explore-comets {
+  width: 280px;
+}
+
+.explore-comets-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.explore-comets-toggle {
+  padding: 2px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  background: none;
+  color: #e8e8f0;
+  font-size: 0.72rem;
+  cursor: pointer;
+}
+
+.explore-comets-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+.explore-comets-list button {
+  display: block;
+  width: 100%;
+  padding: 6px;
+  margin: 0 -6px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: #e8e8f0;
+  font-size: 0.82rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.explore-comets-list button:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.explore-comets-date {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #bfe9ff;
+}
+
+.explore-comets-preview {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: rgba(232, 232, 240, 0.8);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .explore-key { animation: none; }
+  .explore-key.is-leaving { animation: none; opacity: 0; }
+}

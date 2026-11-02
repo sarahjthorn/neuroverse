@@ -1,0 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Theme system: dark (default appearance) and light, switched by App.jsx
+   setting data-theme on <html> - persisted to localStorage once the user
+   explicitly picks one, but defaulting to the OS/browser's own
+   prefers-color-scheme when nothing has been chosen yet (see loadTheme() /
+   the matchMedia listener in App.jsx). Base :root below doubles as the dark
+   palette, so a not-yet-themed first paint matches what most visitors get
+   anyway. See src/themes.js for the edge colours the 3D view
+   sets from JS instead of CSS. */
+:root {
+  --bg-canvas: #17171a;
+  --bg-primary: #1e1e20;
+  --bg-secondary: #202023;
+  --bg-tertiary: #29292d;
+  --border-color: #38383e;
+  --border-hover: #4a4a52;
+  /* Text tiers are kept at WCAG AA (4.5:1+) against --bg-primary: faint
+     was #666 (2.9:1) and placeholders/labels were hard to read. */
+  --text-normal: #e6e6e8;
+  --text-muted: #b3b3b8;
+  --text-faint: #8e8e95;
+  --accent: #8875ff;
+  --accent-hover: #9c8cff;
+  --accent-rgb: 136, 117, 255;
+
+  /* Neutral tint scale for subtle fills/hovers that used to be hardcoded
+     rgba(255,255,255,X) throughout the component CSS - lightens on dark,
+     darkens on light (see the light block below), so every panel that uses
+     these actually looks right in both themes instead of just the root
+     variables changing. */
+  --overlay-1: rgba(255, 255, 255, 0.03);
+  --overlay-2: rgba(255, 255, 255, 0.06);
+  --overlay-3: rgba(255, 255, 255, 0.1);
+
+  /* Near-opaque floating-panel background (graph controls, minimap) that
+     needs to sit legibly over the canvas regardless of what's behind it. */
+  --panel-translucent: rgba(32, 32, 35, 0.92);
+  /* Frosted page cards: the 3D brain glows through, blurred. */
+  --glass-bg: rgba(30, 30, 32, 0.58);
+  --glass-hover-bg: rgba(41, 41, 45, 0.76);
+  --glass-filter: blur(8px) saturate(120%);
+  /* Frosted panels that float over the live (undimmed) 3D brain in Explore -
+     the digest card and the details panel. A touch denser and blurrier
+     than the page cards, since bright stars sit directly behind the text. */
+  --glass-float-bg: rgba(22, 22, 26, 0.64);
+  --glass-float-filter: blur(16px) saturate(130%);
+  --glass-float-border: rgba(255, 255, 255, 0.1);
+  --glass-float-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  /* The top bar floats over the brain (frosted), so everything below it
+     offsets by this instead of the bar taking a row of its own. */
+  --nav-h: 52px;
+  /* Full details panel width - gives a little back on narrower windows so
+     the page beside it keeps room for both its columns. */
+  --details-w: clamp(300px, 28vw, 360px);
+  /* The one gap between cards and columns on Home, Stats and Reflect - and
+     between a page and the details panel beside it (which floats this far
+     from the window edge). */
+  --page-gap: 16px;
+  /* Shared motion: fast settle-in, quicker get-out-of-the-way. Keep
+     --panel-out-ms in sync with DETAILS_EXIT_MS in App.jsx. */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-quad: cubic-bezier(0.55, 0, 1, 0.45);
+  --panel-in-ms: 0.32s;
+  --panel-out-ms: 0.2s;
+
+  /* Search/text fields: lifted off the surface with a border you can
+     actually see, so a search bar never blends into the page. */
+  --field-bg: #26262a;
+  --field-border: #55555e;
+  /* Frosted search bars: a see-through pane of glass with a lit top edge,
+     so the brain shows through but the field still reads as a field. */
+  --field-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.035));
+  --field-glass-focus-bg: linear-gradient(180deg, rgba(40, 40, 48, 0.62), rgba(28, 28, 34, 0.5));
+  --field-glass-border: rgba(255, 255, 255, 0.18);
+  --field-glass-filter: blur(14px) saturate(150%);
+  --field-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.14), inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+}
+
+:root[data-theme='light'] {
+  --bg-canvas: #f6f6f4;
+  --bg-primary: #ffffff;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #eeeeec;
+  --border-color: #e1e0da;
+  --border-hover: #cecdc6;
+  --text-normal: #23231f;
+  --text-muted: #6b6a62;
+  --text-faint: #76756c;
+  --accent: #6f5be6;
+  --accent-hover: #5c48d4;
+  --accent-rgb: 111, 91, 230;
+
+  --overlay-1: rgba(0, 0, 0, 0.035);
+  --overlay-2: rgba(0, 0, 0, 0.06);
+  --overlay-3: rgba(0, 0, 0, 0.09);
+
+  --panel-translucent: rgba(255, 255, 255, 0.9);
+  --glass-bg: rgba(255, 255, 255, 0.52);
+  --glass-hover-bg: rgba(255, 255, 255, 0.74);
+  --glass-filter: blur(8px) saturate(125%);
+  --glass-float-bg: rgba(255, 255, 255, 0.62);
+  --glass-float-filter: blur(16px) saturate(140%);
+  --glass-float-border: rgba(255, 255, 255, 0.7);
+  --glass-float-shadow: 0 12px 40px rgba(60, 60, 90, 0.16);
+
+  --field-bg: #ffffff;
+  --field-border: #b9b8b0;
+  --field-glass-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.42));
+  --field-glass-focus-bg: linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.7));
+  --field-glass-border: rgba(40, 40, 60, 0.16);
+  --field-glass-filter: blur(14px) saturate(160%);
+  --field-glass-highlight: inset 0 1px 0 rgba(255, 255, 255, 0.95), inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-canvas);
+  color: var(--text-normal);
+}
+
+#root {
+  width: 100vw;
+  height: 100vh;
+}
+
+/* ---- Shared motion ---------------------------------------------------- */
+
+/* Floating menus/cards closing (paired with usePresence in JS). */
+@keyframes pop-out {
+  to { opacity: 0; transform: translateY(-4px) scale(0.98); }
+}
+
+/* Cards arriving on a page, one after another (see .memory-feed etc.). */
+@keyframes card-rise {
+  from { opacity: 0; translate: 0 8px; }
+}
+
+/* Press feedback: buttons give a little under the pointer. Uses the
+   standalone `scale` property so it never fights a component's own
+   `transform`. Big cards give less, so they don't look like they lurch. */
+button:not(:disabled):active {
+  scale: 0.97;
+}
+
+.memory-card:not(:disabled):active,
+.home-see-all:not(:disabled):active,
+.global-search-item:active {
+  scale: 0.99;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  button:not(:disabled):active { scale: none; }
+}

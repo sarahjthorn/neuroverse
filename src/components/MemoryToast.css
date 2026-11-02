@@ -1,0 +1,139 @@
+.memory-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  z-index: 50;
+  width: min(360px, calc(100vw - 32px));
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-float-border, var(--border-color));
+  background: var(--glass-float-bg, var(--bg-primary));
+  backdrop-filter: var(--glass-float-filter, none);
+  -webkit-backdrop-filter: var(--glass-float-filter, none);
+  box-shadow: var(--glass-float-shadow, 0 8px 30px rgba(0, 0, 0, 0.2));
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: memory-toast-in 0.28s cubic-bezier(0.2, 0.9, 0.3, 1.2) both;
+}
+
+.memory-toast.is-leaving {
+  animation: memory-toast-out 0.22s ease-in both;
+}
+
+@keyframes memory-toast-in {
+  from { opacity: 0; transform: translate(-50%, 16px) scale(0.97); }
+  to { opacity: 1; transform: translate(-50%, 0) scale(1); }
+}
+
+@keyframes memory-toast-out {
+  from { opacity: 1; transform: translate(-50%, 0); }
+  to { opacity: 0; transform: translate(-50%, 10px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .memory-toast,
+  .memory-toast.is-leaving {
+    animation-duration: 0.01s;
+  }
+}
+
+.memory-toast-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.memory-toast-check {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.memory-toast-title {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.memory-toast-close {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  padding: 0 2px;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.memory-toast-close:hover {
+  color: var(--text-normal);
+}
+
+.memory-toast-list {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.memory-toast-list button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-align: left;
+  cursor: pointer;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.memory-toast-list button:hover {
+  color: var(--accent);
+}
+
+.memory-toast-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.memory-toast-more {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.memory-toast-action {
+  align-self: flex-start;
+  margin-left: 28px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  cursor: pointer;
+}
+
+.memory-toast-action:hover {
+  color: var(--accent-hover);
+}

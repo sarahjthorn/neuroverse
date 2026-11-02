@@ -1,0 +1,42 @@
+{
+  "name": "ai-brain",
+  "version": "1.0.0",
+  "description": "AI-powered knowledge graph that visualizes and connects memories from conversations",
+  "type": "module",
+  "scripts": {
+    "setup": "node scripts/setup.js",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+    "dev:client": "vite",
+    "dev:server": "node --watch server/index.js",
+    "restart": "bash scripts/restart.sh",
+    "build": "vite build",
+    "preview": "vite preview",
+    "build:portfolio": "vite build --config vite.portfolio.config.js",
+    "export:portfolio": "node scripts/export-portfolio-snapshot.js",
+    "test": "node --test 'test/*.test.js'",
+    "portfolio:review": "node scripts/export-portfolio-snapshot.js && open scripts/portfolio-snapshot.review.txt"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.126.0",
+    "3d-force-graph": "^1.80.0",
+    "axios": "^1.7.2",
+    "better-sqlite3": "^13.0.3",
+    "cors": "^2.8.5",
+    "d3-force-3d": "^3.0.6",
+    "express": "^4.19.2",
+    "openai": "^4.52.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sqlite-vec": "^0.1.9",
+    "three": "^0.186.0",
+    "three-spritetext": "^1.10.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.1.2",
+    "concurrently": "^8.2.2",
+    "vite": "^8.3.3"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

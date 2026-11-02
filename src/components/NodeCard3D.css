@@ -1,0 +1,195 @@
+/* Frosted glass over the live 3D brain - same --glass-float-* surface as
+   the full details panel (NodeDetailsPanel.css), so the two read as one
+   family in both themes. Also used by DigestCard3D. */
+.node-card-3d {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 700;
+  width: 300px;
+  max-width: calc(100% - 32px);
+  max-height: calc(100% - 270px); /* stays clear of the control stack bottom-left */
+  overflow-y: auto;
+  padding: 14px 16px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--glass-float-border);
+  background: var(--glass-float-bg);
+  -webkit-backdrop-filter: var(--glass-float-filter);
+  backdrop-filter: var(--glass-float-filter);
+  color: var(--text-normal);
+  box-shadow: var(--glass-float-shadow);
+  animation: node-card-3d-in 0.18s ease-out;
+}
+
+/* Below the "Back to Stats" pill. */
+.node-card-3d.has-return {
+  top: 56px;
+  max-height: calc(100% - 310px);
+}
+
+/* Closing: fades back up the way it came (App keeps it mounted briefly). */
+.node-card-3d.is-leaving {
+  pointer-events: none;
+  animation: pop-out 0.14s var(--ease-in-quad) both;
+}
+
+@keyframes node-card-3d-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+.node-card-3d-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.node-card-3d-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+}
+
+.node-card-3d-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.node-card-3d-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px currentColor;
+}
+
+.node-card-3d-close {
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 2px;
+}
+
+.node-card-3d-close:hover {
+  color: var(--text-normal);
+}
+
+.node-card-3d-title {
+  margin: 8px 0 2px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-normal);
+}
+
+.node-card-3d-date {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+}
+
+.node-card-3d-content {
+  margin: 8px 0 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.node-card-3d-linked {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--overlay-3);
+}
+
+.node-card-3d-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 4px;
+}
+
+.node-card-3d-linked ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.node-card-3d-linked button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 5px 6px;
+  margin: 0 -6px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--text-normal);
+  font-size: 0.83rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.node-card-3d-linked button:hover {
+  background: var(--overlay-2);
+}
+
+.node-card-3d-linked-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.node-card-3d-more {
+  padding: 2px 0;
+  border: none;
+  background: none;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+
+.node-card-3d-more:hover {
+  color: var(--text-normal);
+  text-decoration: underline;
+}
+
+.node-card-3d-details {
+  margin-top: 10px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--accent);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.node-card-3d-details:hover {
+  text-decoration: underline;
+}
+
+.node-card-3d-content-full {
+  -webkit-line-clamp: unset;
+  display: block;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .node-card-3d,
+  .node-card-3d.is-leaving { animation: none; }
+  .node-card-3d.is-leaving { opacity: 0; }
+}
